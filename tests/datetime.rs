@@ -4,6 +4,7 @@
     feature = "hjson",
     feature = "yaml",
     feature = "ini",
+    feature = "hocon",
 ))]
 
 extern crate chrono;
@@ -53,6 +54,13 @@ fn make() -> Config {
             FileFormat::Ini,
         ))
         .unwrap()
+        .merge(File::from_str(
+            r#"
+                hocon_datetime = "2017-05-10T02:14:53Z"
+            "#,
+            FileFormat::Hocon,
+        ))
+        .unwrap()
         .clone()
 }
 
@@ -84,6 +92,11 @@ fn test_datetime_string() {
     let date: String = s.get("ini_datetime").unwrap();
 
     assert_eq!(&date, "2017-05-10T02:14:53Z");
+
+    // HOCON
+    let date: String = s.get("hocon_datetime").unwrap();
+
+    assert_eq!(&date, "2017-05-10T02:14:53Z");
 }
 
 #[test]
@@ -112,6 +125,11 @@ fn test_datetime() {
 
     // INI
     let date: DateTime<Utc> = s.get("ini_datetime").unwrap();
+
+    assert_eq!(date, Utc.ymd(2017, 5, 10).and_hms(2, 14, 53));
+
+    // HOCON
+    let date: DateTime<Utc> = s.get("hocon_datetime").unwrap();
 
     assert_eq!(date, Utc.ymd(2017, 5, 10).and_hms(2, 14, 53));
 }

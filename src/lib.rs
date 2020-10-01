@@ -6,7 +6,7 @@
 //!  - Environment variables
 //!  - Another Config instance
 //!  - Remote configuration: etcd, Consul
-//!  - Files: JSON, YAML, TOML, HJSON
+//!  - Files: JSON, YAML, TOML, HJSON, INI, HOCON
 //!  - Manual, programmatic override (via a `.set` method on the Config instance)
 //!
 //! Additionally, Config supports:
@@ -50,6 +50,9 @@ extern crate serde_hjson;
 
 #[cfg(feature = "ini")]
 extern crate ini;
+
+#[cfg(feature = "hocon")]
+extern crate hocon_ext;
 
 mod config;
 mod de;
